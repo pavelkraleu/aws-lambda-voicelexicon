@@ -10,12 +10,12 @@ Parameters:
     MaxLength: 50
 
 Resources:
-  lambdagensound:
+  LambdaHandleForm:
     Type: 'AWS::Serverless::Function'
     Properties:
       Handler: lambda_function.lambda_handler
       Runtime: python3.6
-      CodeUri: ./handleform
+      CodeUri: 's3://repo-lambda-zips/HandleForm.zip'
       Description: 'Lambda function handling requests from the HTML form'
       MemorySize: 128
       Timeout: 300
