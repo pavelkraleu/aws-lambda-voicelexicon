@@ -78,9 +78,15 @@ def lambda_handler(event, context):
 
     file_id, name = get_new_id()
 
-    response = boto3.client('stepfunctions').start_execution(
-        stateMachineArn=os.environ['StateMachineArn'],
-        input=json.dumps([words, file_id, name, lang_code_a, lang_voice_a, lang_code_b, lang_voice_b])
+    # response = boto3.client('stepfunctions').start_execution(
+    #     stateMachineArn=os.environ['StateMachineArn'],
+    #     input=json.dumps([words, file_id, name, lang_code_a, lang_voice_a, lang_code_b, lang_voice_b])
+    # )
+
+    response = boto3.client('lambda').invoke(
+        FunctionName="GenSoundLambda",
+        InvocationType='Event',
+        Payload=json.dumps([words, file_id, name, lang_code_a, lang_voice_a, lang_code_b, lang_voice_b])
     )
 
     print(response)

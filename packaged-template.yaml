@@ -9,13 +9,12 @@ Parameters:
 Resources:
   GenSoundLambda:
     Properties:
-      CodeUri: s3://repo-lambda-zips/5a7ad733db86b889ada3abc3d880e6f8
+      CodeUri: s3://repo-lambda-zips/6fe68ffc4eff5a1d3f2255f4a1066b5d
       Description: ''
       Environment:
         Variables:
           BucketName:
             Ref: BUCKETNAME
-      FunctionName: GenSoundLambda
       Handler: lambda_function.lambda_handler
       MemorySize: 128
       Policies:
@@ -39,7 +38,6 @@ Resources:
             Method: ANY
             Path: /HandleForm
           Type: Api
-      FunctionName: HandleFormLambda
       Handler: lambda_function.lambda_handler
       MemorySize: 128
       Policies:

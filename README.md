@@ -3,11 +3,9 @@
 
 ## Create S3 Bucket
 
-This bucket needs to be publicly accessible
-
 ## Deploy the package
 
-## Create State Machine
+## Add Permission for Polly API
 
 ## Update Lambda function
 

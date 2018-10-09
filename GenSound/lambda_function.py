@@ -1,6 +1,6 @@
 import tempfile
 import boto3
-from .translator import Translator
+from translator import Translator
 import os
 
 bucket = os.environ['BucketName']
