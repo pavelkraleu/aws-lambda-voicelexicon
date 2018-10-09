@@ -1,0 +1,52 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Voice Lexicon API
+Parameters:
+  BUCKETNAME:
+    Description: S3 Bucket name where will be recordings uploaded
+    MaxLength: 50
+    MinLength: 4
+    Type: String
+Resources:
+  GenSoundLambda:
+    Properties:
+      CodeUri: s3://repo-lambda-zips/5a7ad733db86b889ada3abc3d880e6f8
+      Description: ''
+      Environment:
+        Variables:
+          BucketName:
+            Ref: BUCKETNAME
+      FunctionName: GenSoundLambda
+      Handler: lambda_function.lambda_handler
+      MemorySize: 128
+      Policies:
+      - S3FullAccessPolicy:
+          BucketName:
+            Ref: BUCKETNAME
+      Runtime: python3.6
+      Timeout: 60
+    Type: AWS::Serverless::Function
+  HandleFormLambda:
+    Properties:
+      CodeUri: s3://repo-lambda-zips/baa6f69c888b7234435732442f3d8e69
+      Description: ''
+      Environment:
+        Variables:
+          BucketName:
+            Ref: BUCKETNAME
+      Events:
+        Api1:
+          Properties:
+            Method: ANY
+            Path: /HandleForm
+          Type: Api
+      FunctionName: HandleFormLambda
+      Handler: lambda_function.lambda_handler
+      MemorySize: 128
+      Policies:
+      - S3FullAccessPolicy:
+          BucketName:
+            Ref: BUCKETNAME
+      Runtime: python3.6
+      Timeout: 60
+    Type: AWS::Serverless::Function
+Transform: AWS::Serverless-2016-10-31

@@ -8,14 +8,10 @@ Parameters:
     Description: S3 Bucket name where will be recordings uploaded
     MinLength: 4
     MaxLength: 50
-  STATEMACHINEARN:
-    Type: String
-    Description: State Machine ARN
-    Default: 'arn....'
 
 
 Resources:
-  HandleForm:
+  HandleFormLambda:
     Type: 'AWS::Serverless::Function'
     Properties:
       Handler: lambda_function.lambda_handler
@@ -26,12 +22,11 @@ Resources:
       MemorySize: 128
       Timeout: 60
       Policies:
-        - S3CrudPolicy:
+        - S3FullAccessPolicy:
             BucketName: !Ref BUCKETNAME
       Environment:
         Variables:
           BucketName: !Ref BUCKETNAME
-          StateMachineArn: !Ref STATEMACHINEARN
       Events:
         Api1:
           Type: Api
@@ -39,7 +34,7 @@ Resources:
             Path: /HandleForm
             Method: ANY
 
-  GenSound:
+  GenSoundLambda:
     Type: 'AWS::Serverless::Function'
     Properties:
       Handler: lambda_function.lambda_handler
@@ -49,16 +44,9 @@ Resources:
       Description: ''
       MemorySize: 128
       Timeout: 60
-      Role: 'arn:aws:iam::762010787478:role/service-role/HandleForm'
-#      Policies:
-#        - S3CrudPolicy:
-#            BucketName: !Ref BUCKETNAME
-#      Environment:
-#        Variables:
-#          BucketName: !Ref BUCKETNAME
-      Events:
-        Api1:
-          Type: Api
-          Properties:
-            Path: /GenSound
-            Method: ANY
+      Policies:
+        - S3FullAccessPolicy:
+            BucketName: !Ref BUCKETNAME
+      Environment:
+        Variables:
+          BucketName: !Ref BUCKETNAME
