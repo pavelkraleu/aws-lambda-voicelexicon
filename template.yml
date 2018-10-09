@@ -8,20 +8,57 @@ Parameters:
     Description: S3 Bucket name where will be recordings uploaded
     MinLength: 4
     MaxLength: 50
+  STATEMACHINEARN:
+    Type: String
+    Description: State Machine ARN
+    Default: 'arn....'
+
 
 Resources:
-  LambdaHandleForm:
+  HandleForm:
     Type: 'AWS::Serverless::Function'
     Properties:
       Handler: lambda_function.lambda_handler
+      FunctionName: HandleFormLambda
       Runtime: python3.6
-      CodeUri: 's3://repo-lambda-zips/HandleForm.zip'
-      Description: 'Lambda function handling requests from the HTML form'
+      CodeUri: ./HandleForm
+      Description: ''
       MemorySize: 128
-      Timeout: 300
+      Timeout: 60
       Policies:
-        - S3FullAccessPolicy:
+        - S3CrudPolicy:
             BucketName: !Ref BUCKETNAME
       Environment:
         Variables:
           BucketName: !Ref BUCKETNAME
+          StateMachineArn: !Ref STATEMACHINEARN
+      Events:
+        Api1:
+          Type: Api
+          Properties:
+            Path: /HandleForm
+            Method: ANY
+
+  GenSound:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: lambda_function.lambda_handler
+      FunctionName: GenSoundLambda
+      Runtime: python3.6
+      CodeUri: ./GenSound
+      Description: ''
+      MemorySize: 128
+      Timeout: 60
+      Role: 'arn:aws:iam::762010787478:role/service-role/HandleForm'
+#      Policies:
+#        - S3CrudPolicy:
+#            BucketName: !Ref BUCKETNAME
+#      Environment:
+#        Variables:
+#          BucketName: !Ref BUCKETNAME
+      Events:
+        Api1:
+          Type: Api
+          Properties:
+            Path: /GenSound
+            Method: ANY

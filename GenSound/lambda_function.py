@@ -1,9 +1,9 @@
 import tempfile
 import boto3
 from .translator import Translator
+import os
 
-
-bucket = "dictionary-mp3"
+bucket = os.environ['BucketName']
 
 
 def upload_file(file_path, file_id):

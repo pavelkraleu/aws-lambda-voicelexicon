@@ -2,9 +2,10 @@ import csv
 import json
 from urllib.parse import urlparse, parse_qs
 import boto3
+import os
 
 
-bucket = "dictionary-mp3"
+bucket = os.environ['BucketName']
 
 def file_exists(key):
 
@@ -78,7 +79,7 @@ def lambda_handler(event, context):
     file_id, name = get_new_id()
 
     response = boto3.client('stepfunctions').start_execution(
-        stateMachineArn='arn:aws:states:us-east-1:762010787478:stateMachine:SoundGenerator',
+        stateMachineArn=os.environ['StateMachineArn'],
         input=json.dumps([words, file_id, name, lang_code_a, lang_voice_a, lang_code_b, lang_voice_b])
     )
 
